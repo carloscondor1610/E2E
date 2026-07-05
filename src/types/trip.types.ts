@@ -15,3 +15,13 @@ export interface Trip {
   passengerRating: number | null;
   ratingComment: string | null;
 }
+
+export interface CreateTripRequest {
+  pickupAddress: string;
+  dropoffAddress: string;
+}
+
+export interface RateTripRequest {
+  rating: number;
+  comment?: string;
+}
