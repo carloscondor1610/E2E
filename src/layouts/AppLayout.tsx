@@ -14,7 +14,7 @@ export function AppLayout() {
     <div className="app-shell">
       <header className="topbar">
         <Link className="brand" to="/">
-          Uber E2E
+          Uber
         </Link>
 
         <nav className="topbar-actions">
@@ -29,8 +29,8 @@ export function AppLayout() {
             </>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Registro</Link>
+              <Link to="/login">Iniciar sesión</Link>
+              <Link className="nav-cta" to="/register">Registrarse</Link>
             </>
           )}
         </nav>

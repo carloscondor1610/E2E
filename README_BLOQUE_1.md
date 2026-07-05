@@ -1,40 +1,46 @@
-# Bloque 1 — Base del frontend E2E
+# Bloque 1 — Base frontend + UI estilo Uber
 
-Este avance crea la base del frontend en una carpeta independiente llamada `frontend/`.
+Este bloque deja preparada la base React + TypeScript del frontend y actualiza las pantallas de `login` y `registro` para que se vean más como una app/web tipo Uber.
 
 ## Qué incluye
 
 - React + TypeScript + Vite.
-- React Router configurado.
-- `AuthProvider` para restaurar sesión con `GET /users/me` si existe token.
-- `apiRequest()` centralizado con `Authorization: Bearer <token>`.
-- Tipos iniciales: `User`, `Trip`, `Role`, `TripStatus`.
-- Rutas base:
-  - `/login`
-  - `/register`
-  - `/passenger/dashboard`
-  - `/driver/dashboard`
-- Rutas protegidas por rol.
-- Layout con navbar y logout.
+- React Router.
+- `apiRequest()` centralizado en `src/api/http.ts`.
+- Manejo base de JWT en `localStorage`.
+- `AuthProvider` y rutas protegidas por rol.
+- Tipos base para usuario, auth y viajes.
+- Layout principal con barra superior estilo Uber.
+- Pantallas visuales de login y registro estilo Uber.
 
-## Cómo colocarlo en tu repo
+## Importante
 
-Copia o descomprime la carpeta `frontend/` dentro de la raíz del backend.
+En este bloque los formularios de login y registro todavía están deshabilitados porque la conexión real con:
 
-La estructura final debe quedar así:
+- `POST /auth/login`
+- `POST /auth/register`
+- `GET /users/me`
 
-```txt
-cs2031-2026-1-week14-e2e-2-main/
-├── frontend/
-├── src/
-├── pom.xml
-├── mvnw
-└── README.md
+se implementará en el Bloque 2.
+
+## Cómo probar
+
+```bash
+cd frontend
+npm install
+Copy-Item .env.example .env
+npm run dev
 ```
 
-## Qué NO debes eliminar
+Luego abre:
 
-No elimines estas partes del backend:
+```txt
+http://localhost:5173
+```
+
+## Qué no debes borrar del proyecto raíz
+
+No elimines:
 
 ```txt
 src/
@@ -46,32 +52,8 @@ README.md
 CLAUDE.md
 ```
 
-En los siguientes bloques, normalmente solo tendrás que reemplazar la carpeta `frontend/` por la nueva versión acumulada.
-
-## Cómo ejecutarlo
-
-Backend:
-
-```bash
-./mvnw spring-boot:run
-```
-
-Frontend:
-
-```bash
-cd frontend
-npm install
-cp .env.example .env
-npm run dev
-```
-
-Abre:
+Para actualizar este bloque, puedes reemplazar únicamente la carpeta:
 
 ```txt
-http://localhost:5173
+frontend/
 ```
-
-## Nota importante
-
-Este bloque todavía no implementa el formulario real de login/registro. Eso entra en el Bloque 2.
-Por ahora, deja lista la arquitectura para que el login pueda guardar el token, cargar `/users/me` y redirigir por rol.
