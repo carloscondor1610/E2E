@@ -1,5 +1,5 @@
-import type { Role } from '../types/user.types';
+import type { Role } from "../types/user.types";
 
-export function getHomePathByRole(role: Role): string {
-  return role === 'PASSENGER' ? '/passenger/dashboard' : '/driver/dashboard';
+export function dashboardPathByRole(role: Role): string {
+  return role === "DRIVER" ? "/driver/dashboard" : "/passenger/dashboard";
 }

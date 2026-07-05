@@ -1,15 +1,16 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getCurrentUser } from '../api/auth.api';
-import { TOKEN_KEY } from '../api/http';
-import type { User } from '../types/user.types';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { clearToken, hasToken, saveToken } from "../api/http";
+import { getCurrentUser, loginRequest, registerRequest } from "../api/auth.api";
+import type { LoginRequest, RegisterRequest, User } from "../types/user.types";
 
 interface AuthContextValue {
   user: User | null;
-  isLoading: boolean;
   isAuthenticated: boolean;
-  saveTokenAndLoadUser: (token: string) => Promise<User>;
-  refreshUser: () => Promise<User | null>;
+  isLoading: boolean;
+  login: (body: LoginRequest) => Promise<User>;
+  register: (body: RegisterRequest) => Promise<User>;
   logout: () => void;
+  refreshUser: () => Promise<User | null>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -18,16 +19,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
-    setUser(null);
-  }, []);
-
   const refreshUser = useCallback(async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
-
-    if (!token) {
+    if (!hasToken()) {
       setUser(null);
+      setIsLoading(false);
       return null;
     }
 
@@ -36,48 +31,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentUser);
       return currentUser;
     } catch {
-      logout();
+      clearToken();
+      setUser(null);
       return null;
+    } finally {
+      setIsLoading(false);
     }
-  }, [logout]);
+  }, []);
 
-  const saveTokenAndLoadUser = useCallback(async (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token);
+  useEffect(() => {
+    void refreshUser();
+  }, [refreshUser]);
+
+  const login = useCallback(async (body: LoginRequest) => {
+    const response = await loginRequest(body);
+    saveToken(response.token);
     const currentUser = await getCurrentUser();
     setUser(currentUser);
     return currentUser;
   }, []);
 
-  useEffect(() => {
-    let ignore = false;
+  const register = useCallback(async (body: RegisterRequest) => {
+    const response = await registerRequest(body);
+    saveToken(response.token);
+    const currentUser = await getCurrentUser();
+    setUser(currentUser);
+    return currentUser;
+  }, []);
 
-    async function restoreSession() {
-      setIsLoading(true);
-      const currentUser = await refreshUser();
+  const logout = useCallback(() => {
+    clearToken();
+    setUser(null);
+  }, []);
 
-      if (!ignore) {
-        setUser(currentUser);
-        setIsLoading(false);
-      }
-    }
-
-    void restoreSession();
-
-    return () => {
-      ignore = true;
-    };
-  }, [refreshUser]);
-
-  const value = useMemo(
+  const value = useMemo<AuthContextValue>(
     () => ({
       user,
-      isLoading,
       isAuthenticated: Boolean(user),
-      saveTokenAndLoadUser,
-      refreshUser,
+      isLoading,
+      login,
+      register,
       logout,
+      refreshUser,
     }),
-    [user, isLoading, saveTokenAndLoadUser, refreshUser, logout],
+    [user, isLoading, login, register, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -85,10 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-
   if (!context) {
-    throw new Error('useAuth debe usarse dentro de AuthProvider');
+    throw new Error("useAuth debe usarse dentro de AuthProvider");
   }
-
   return context;
 }

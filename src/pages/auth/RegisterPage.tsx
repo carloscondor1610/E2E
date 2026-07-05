@@ -1,66 +1,134 @@
-import { Link } from 'react-router-dom';
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
+import { ErrorMessage } from "../../components/ErrorMessage";
+import type { Role } from "../../types/user.types";
+import { dashboardPathByRole } from "../../utils/routes";
 
 export function RegisterPage() {
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState<Role>("PASSENGER");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError("");
+
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+      setError("Completa todos los campos.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const user = await register({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        password,
+        role,
+      });
+      navigate(dashboardPathByRole(user.role), { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No se pudo crear la cuenta.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <main className="auth-page register-page">
-      <section className="auth-hero" aria-label="Registro Uber E2E">
-        <div className="auth-hero-content">
-          <p className="eyebrow">Únete a Uber E2E</p>
+    <main className="auth-page auth-page-register">
+      <section className="auth-hero light-hero">
+        <div className="hero-content">
+          <p className="eyebrow dark-text">Únete a Uber E2E</p>
           <h1>Empieza como pasajero o conductor</h1>
-          <p>
-            Crea una cuenta para probar el flujo completo: solicitar, aceptar, completar y calificar viajes.
-          </p>
-          <div className="hero-stats" aria-label="Roles disponibles">
+          <p className="hero-copy dark-copy">Crea tu cuenta y prueba el flujo completo de viajes de inicio a fin.</p>
+          <div className="hero-pills muted-pills">
             <span>Pasajero</span>
             <span>Conductor</span>
-            <span>JWT + roles</span>
+            <span>Sesión segura</span>
           </div>
         </div>
       </section>
 
-      <section className="auth-panel" aria-label="Formulario de registro">
-        <div className="auth-card uber-card">
-          <div className="auth-card-header">
-            <p className="eyebrow dark">Crea tu cuenta</p>
-            <h2>Registro</h2>
-            <p>En el Bloque 2 este formulario conectará con <strong>POST /auth/register</strong>.</p>
-          </div>
+      <section className="auth-panel black-panel">
+        <div className="auth-card dark-card">
+          <p className="eyebrow">Crea tu cuenta</p>
+          <h2>Registro</h2>
+          <p className="auth-subtitle">Elige tu rol y completa tus datos para comenzar.</p>
 
-          <form className="uber-form two-column-form">
-            <div>
-              <label htmlFor="firstName">Nombre</label>
-              <input id="firstName" type="text" placeholder="Ana" disabled />
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-grid">
+              <label>
+                Nombre
+                <input
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
+                  placeholder="Ana"
+                  autoComplete="given-name"
+                />
+              </label>
+
+              <label>
+                Apellido
+                <input
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
+                  placeholder="Torres"
+                  autoComplete="family-name"
+                />
+              </label>
             </div>
 
-            <div>
-              <label htmlFor="lastName">Apellido</label>
-              <input id="lastName" type="text" placeholder="Torres" disabled />
-            </div>
+            <label>
+              Correo electrónico
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="ana@uber.com"
+                autoComplete="email"
+              />
+            </label>
 
-            <div className="full-field">
-              <label htmlFor="registerEmail">Correo electrónico</label>
-              <input id="registerEmail" type="email" placeholder="ana@uber.com" disabled />
-            </div>
+            <label>
+              Contraseña
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Mínimo 6 caracteres"
+                autoComplete="new-password"
+              />
+            </label>
 
-            <div className="full-field">
-              <label htmlFor="registerPassword">Contraseña</label>
-              <input id="registerPassword" type="password" placeholder="Mínimo 6 caracteres" disabled />
-            </div>
-
-            <div className="full-field">
-              <label htmlFor="role">Rol</label>
-              <select id="role" disabled defaultValue="PASSENGER">
+            <label>
+              Rol
+              <select value={role} onChange={(event) => setRole(event.target.value as Role)}>
                 <option value="PASSENGER">Pasajero</option>
                 <option value="DRIVER">Conductor</option>
               </select>
-            </div>
+            </label>
 
-            <button className="primary-button full-field" type="button" disabled>
-              Crear cuenta
+            <ErrorMessage message={error} />
+
+            <button type="submit" className="primary-button inverted-button" disabled={isSubmitting}>
+              {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
             </button>
           </form>
 
-          <p className="auth-switch">
+          <p className="auth-footer dark-footer">
             ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
           </p>
         </div>

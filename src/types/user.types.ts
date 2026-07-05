@@ -1,4 +1,4 @@
-export type Role = 'PASSENGER' | 'DRIVER';
+export type Role = "PASSENGER" | "DRIVER";
 
 export interface User {
   id: number;
@@ -8,4 +8,21 @@ export interface User {
   role: Role;
   available: boolean;
   rating: number;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: Role;
+}
+
+export interface AuthResponse {
+  token: string;
 }
