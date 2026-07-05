@@ -1,0 +1,135 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+a {
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  align-items: center;
+  background: #111827;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+}
+
+.brand {
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.topbar-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: flex-end;
+}
+
+.topbar-actions a {
+  color: white;
+}
+
+.user-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.secondary-button {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.page-container {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 2rem clamp(1rem, 4vw, 3rem);
+}
+
+.narrow-container {
+  max-width: 620px;
+}
+
+.page-center {
+  align-items: center;
+  display: flex;
+  min-height: 70vh;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+  padding: 1.4rem;
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+}
+
+.card p {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0.4rem 0;
+}
+
+.muted-card {
+  border-left: 6px solid #111827;
+}
+
+.helper-card {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+code {
+  background: #f3f4f6;
+  border-radius: 8px;
+  display: block;
+  padding: 0.7rem;
+}
