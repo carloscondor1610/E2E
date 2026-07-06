@@ -7,7 +7,7 @@ npm install
 npm run dev
 ```
 
-## Prueba rápida
+## Prueba rapida
 
 1. Ingresa como pasajero y crea un viaje. (utiliza el usuario ya planeado como conductor y pasajero previamente)
 2. Cierra sesión.
