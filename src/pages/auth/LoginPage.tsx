@@ -69,7 +69,7 @@ export function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="ana@uber.com"
+                placeholder="ejemplo@uber.com"
                 autoComplete="email"
               />
             </label>
@@ -80,7 +80,7 @@ export function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="pass123"
+                placeholder="......"
                 autoComplete="current-password"
               />
             </label>
