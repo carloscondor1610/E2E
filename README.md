@@ -18,4 +18,8 @@ npm run dev
 7. Abre el detalle del viaje completado y califica.
 8. Revisa Historial y filtra por estado.
 
+## Integrantes:
 
+1. Mahir Gianpier Gutierrez Rodriguez
+2. Carlos Fabrizio Condor Hurtado
+3. Brisseth Alessandra Surquislla Gamarra
