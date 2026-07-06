@@ -1,25 +1,4 @@
-# Uber E2E Frontend — avance acumulado completo
 
-Este ZIP incluye el frontend acumulado hasta los 7 incisos de la rúbrica.
-
-## Incisos cubiertos
-
-1. Login / Registro con JWT, localStorage, Bearer token y redirección por rol.
-2. Dashboard pasajero con GET /trips.
-3. Solicitar viaje con GET /drivers/available y POST /trips.
-4. Detalle pasajero con GET /trips/{id}, polling y calificación.
-5. Dashboard conductor con rating, GET /trips/pending, GET /trips/my y PATCH /trips/{id}/accept.
-6. Detalle conductor con GET /trips/{id} y PATCH /trips/{id}/complete.
-7. Historial para ambos roles con filtro por estado.
-
-## Actualización segura
-
-Dentro de frontend/, conserva solo:
-
-- .env
-- node_modules/
-
-Reemplaza todo lo demás con el contenido de este ZIP.
 
 ## Comandos
 
