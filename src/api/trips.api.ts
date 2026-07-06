@@ -29,6 +29,18 @@ export function getTripById(id: number | string): Promise<Trip> {
   return apiRequest<Trip>(`/trips/${id}`);
 }
 
+export function acceptTrip(id: number | string): Promise<Trip> {
+  return apiRequest<Trip>(`/trips/${id}/accept`, {
+    method: "PATCH",
+  });
+}
+
+export function completeTrip(id: number | string): Promise<Trip> {
+  return apiRequest<Trip>(`/trips/${id}/complete`, {
+    method: "PATCH",
+  });
+}
+
 export function rateTrip(id: number | string, body: RateTripRequest): Promise<Trip> {
   return apiRequest<Trip>(`/trips/${id}/rate`, {
     method: "POST",

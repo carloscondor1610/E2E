@@ -10,15 +10,19 @@ export function AppLayout() {
     navigate("/login", { replace: true });
   };
 
+  const dashboardPath = user?.role === "DRIVER" ? "/driver/dashboard" : "/passenger/dashboard";
+
   return (
     <div className="app-layout">
       <header className="topbar">
-        <Link to={user?.role === "DRIVER" ? "/driver/dashboard" : "/passenger/dashboard"} className="brand-link">
+        <Link to={dashboardPath} className="brand-link">
           Uber
         </Link>
         <nav className="topbar-nav">
           {user ? (
             <>
+              <Link to={dashboardPath}>Dashboard</Link>
+              <Link to="/history">Historial</Link>
               <span className="user-chip">{user.firstName} · {user.role === "DRIVER" ? "Conductor" : "Pasajero"}</span>
               <button type="button" className="link-button" onClick={handleLogout}>Salir</button>
             </>

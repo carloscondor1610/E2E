@@ -8,6 +8,8 @@ import { PassengerDashboardPage } from "../pages/passenger/PassengerDashboardPag
 import { CreateTripPage } from "../pages/passenger/CreateTripPage";
 import { PassengerTripDetailPage } from "../pages/passenger/PassengerTripDetailPage";
 import { DriverDashboardPage } from "../pages/driver/DriverDashboardPage";
+import { DriverTripDetailPage } from "../pages/driver/DriverTripDetailPage";
+import { HistoryPage } from "../pages/HistoryPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 
 export function AppRoutes() {
@@ -21,6 +23,10 @@ export function AppRoutes() {
           <Route path="register" element={<RegisterPage />} />
         </Route>
 
+        <Route element={<ProtectedRoute />}>
+          <Route path="history" element={<HistoryPage />} />
+        </Route>
+
         <Route element={<ProtectedRoute allowedRoles={["PASSENGER"]} />}>
           <Route path="passenger/dashboard" element={<PassengerDashboardPage />} />
           <Route path="passenger/trips/new" element={<CreateTripPage />} />
@@ -29,6 +35,7 @@ export function AppRoutes() {
 
         <Route element={<ProtectedRoute allowedRoles={["DRIVER"]} />}>
           <Route path="driver/dashboard" element={<DriverDashboardPage />} />
+          <Route path="driver/trips/:id" element={<DriverTripDetailPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
